@@ -1,0 +1,232 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum CustomerStatus {
+  created
+  for_printing
+  completed
+  shipped_out
+  ho_accepted
+  ho_returned_doc
+  ho_shipped_out
+  atm_delivered
+  pending
+  cancelled
+}
+
+enum CivilStatus {
+  unmarried
+  married
+  separated
+  widowed
+  divorced
+  annulled
+}
+
+enum JobTitlePosition {
+  none
+  tsm
+  rfc
+  ofw
+  self
+  oth
+}
+
+enum TypeofId {
+  none
+  sss
+  gsis
+  umid
+  tin
+  philhealth
+  pag_ibig
+}
+
+enum NatureofEmployment {
+  none
+  ctn
+  fin
+  fsp
+  mfg
+  msp
+  tou
+  mdl
+  oth
+}
+
+enum ExpectedFrequency {
+  none
+  a5x
+  a10x
+  a15x
+  oth
+}
+
+enum AverageAmount {
+  none
+  below50k
+  a51k
+  a101k
+  a501k
+}
+
+enum MailingAddress {
+  none
+  permanent
+  present
+  business_employer
+}
+
+model Customer {
+  id                           String             @id @default(cuid(2))
+  countryLocation              String
+  customerStatus               CustomerStatus
+  lastname                     String
+  firstname                    String
+  middlename                   String
+  suffix                       String?
+  otherName                    String?
+  birthDate                    DateTime
+  birthPlace                   String
+  birthCountry                 String
+  chouse                       String
+  cstreet                      String?
+  ccity                        String?
+  cstate                       String?
+  cpostalcode                  String?
+  ccountry                     String
+  phouse                       String
+  pfloor                       String?
+  pbuildingName                String?
+  pstreet                      String?
+  psubdivision                 String?
+  pbarangay                    String?
+  pcity                        String?
+  pprovince                    String?
+  pdistrict                    String?
+  pcountry                     String
+  pzipcode                     String
+  email                        String             @unique
+  currentMobile                String
+  homeCountryMobile            String
+  companyName                  String?
+  jobTitle                     String?
+  companyAddress               String?
+  civilStatus                  CivilStatus
+  nationality                  String
+  gender                       String
+  spouseName                   String?
+  spouseBirthdate              DateTime?
+  noofChildren                 Int?
+  typeofId                     TypeofId?
+  typeIdNumber                 String?
+  noIdReason                   String?
+  motherMaidenName             String?
+  typeofIdPresented            String?
+  idPresentedNumber            String?
+  noofDependents               Int?
+  referenceRemittance          String?
+  referenceDate                DateTime?
+  typeofAccount                String?
+  newOrUpdate                  String
+  preferredBranch              String
+  natureofEmployment           NatureofEmployment
+  employmentSpecifyOther       String?
+  sofSalaryEmployment          Boolean?
+  sofBusiness                  Boolean?
+  sofPension                   Boolean?
+  sofRemittances               Boolean?
+  sofCountryofOrigin           String?
+  sofSaleofAsset               Boolean?
+  sofOthers                    Boolean?
+  sofSpecifyOther              String?
+  paoSavings                   Boolean?
+  paoBusiness                  Boolean?
+  paoPension                   Boolean?
+  paoRemittance                Boolean?
+  paoOrigin                    String?
+  paoDestination               String?
+  paoOthers                    Boolean?
+  paoSpecifyOther              String?
+  jobTitlePosition             JobTitlePosition
+  jobTitlePositionSpecifyOther String?
+  expectedFreqTransaction      ExpectedFrequency
+  expectedFreqSpecifyOther     String?
+  averageAmountTransaction     AverageAmount
+  preferredMailingAddress      MailingAddress
+  userId                       String
+  createdBy                    String
+  updatedBy                    String
+  createdAt                    DateTime           @default(now())
+  updatedAt                    DateTime           @updatedAt
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  role          String    @default("user")
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
