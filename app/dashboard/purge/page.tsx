@@ -52,7 +52,11 @@ export default async function PurgePage({
   const records = await getFilteredRecordsService({ recordStatus, purgeDate })
 
   return (
-    <Suspense fallback={<div>Loading Purge Dashboard...</div>}>
+    <Suspense
+      fallback={
+        <div className="text-sm text-green-500">Loading Purge Dashboard...</div>
+      }
+    >
       <PurgeForm
         initialRecords={records}
         currentStatus={recordStatus}
