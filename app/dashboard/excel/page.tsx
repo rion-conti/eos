@@ -7,7 +7,7 @@ export default async function ExportPage() {
     <main className="p-8">
       <H1>Customer Management</H1>
 
-      <Suspense fallback={<div className="mt-5">Loading export button...</div>}>
+      <Suspense fallback={<div className="mt-6 text-sm text-green-500">Loading export button...</div>}>
         <CustomerSection />
       </Suspense>
     </main>

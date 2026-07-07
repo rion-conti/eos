@@ -66,7 +66,7 @@ export default function ProductTourPage() {
           </Link>
           <div className="flex items-center space-x-2">
             <span className="bg-linear-to-br from-teal-400 to-emerald-500 bg-clip-text text-xl font-extrabold tracking-tight text-transparent">
-              EOS
+              <Link href="/eos">EOS</Link>
             </span>
           </div>
         </div>
