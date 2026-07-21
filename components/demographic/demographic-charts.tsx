@@ -13,7 +13,7 @@ import {
 } from "recharts"
 import { Users, MapPin, Calendar, Heart } from "lucide-react"
 
-const GENDER_COLORS = ["#2563eb", "#db2777"]
+const GENDER_COLORS = ["#db2777", "#2563eb"]
 const STATUS_COLORS = [
   "#0ea5e9",
   "#10b981",
